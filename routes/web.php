@@ -13,7 +13,7 @@ Route::get('/', function () {
     // DB facades running sql quries
 
     // Select all user
-    $users = DB::select("select * from users");
+    // $users = DB::select("select * from users");
 
     // Select user by id
     // $users = FB::select("select * from users where id = 1");
@@ -33,6 +33,31 @@ Route::get('/', function () {
 
     // Delete user 
     // $users = DB::delete("delete from users where id = ?", [6]);
+
+    // Select all user  using builder query 
+    // will show a collection of array abit different from all array
+    $users = DB::table('users')->get();
+
+    // Select specific users using query builder
+    // $users = DB::table('users')->where('id',4)->get();
+    // $users = DB::table('users')->find(1);
+
+    // Select first user from the table
+    // $users = DB::table('users')->first();
+
+    // Insert new user using query builder
+    // $users = DB::table('users')->insert([
+    //     'id' => 2,
+    //     'name' => 'Kimlay',
+    //     'email' => 'kimlay@gmail.com',
+    //     'password' => "12345678"
+    // ]);
+
+    // Update the user using quert builder
+    // $users = DB::table('users')->where('id',2)->update(['email' => 'kimlay@gmail.com']);
+
+    // Delete a user using query builder
+    // $users = DB::table('users')->where('id',4)->delete();
 
     // Show the sql quries
     dd($users);
