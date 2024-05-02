@@ -1,1 +1,1 @@
-Laravel Course
+This is the laravel course
