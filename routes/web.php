@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +14,7 @@ Route::get('/', function () {
     // DB facades running sql quries
 
     // Select all user
-    // $users = DB::select("select * from users");
+    $users = DB::select("select * from users");
 
     // Select user by id
     // $users = FB::select("select * from users where id = 1");
@@ -36,7 +37,7 @@ Route::get('/', function () {
 
     // Select all user  using builder query 
     // will show a collection of array abit different from all array
-    $users = DB::table('users')->get();
+    // $users = DB::table('users')->get();
 
     // Select specific users using query builder
     // $users = DB::table('users')->where('id',4)->get();
@@ -59,6 +60,31 @@ Route::get('/', function () {
     // Delete a user using query builder
     // $users = DB::table('users')->where('id',4)->delete();
 
+    // Show all data using eloquent 
+    // $users = User::get();
+
+    // Show specific data using eloquent (ORM)
+    // $users = User::where('id',1)->first();
+
+    // Create using eloquent 
+    // $users = User::create([
+    //     'name' => 'KimLong10',
+    //     'email' => 'mizterlong121@gmail.com',
+    //     'password' => '12345678'
+    // ]);
+
+    // Update user using eloquent
+    // $users = User::find(9);
+    // $users->update([
+    //     'name' => 'long',
+    //     'email' => 'long@gmail.com'
+    // ]);
+    
+    // Delete using eloquent
+    // $users = User::find(9);
+    // $users->delete();
+
+    // Die Dump for dd
     // Show the sql quries
     dd($users);
 });
