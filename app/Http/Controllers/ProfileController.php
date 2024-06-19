@@ -16,7 +16,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        // show user avatar full path
+        // dd($request->user()->avatar);
+        // return view(where to return to, [array of data])
         return view('profile.edit', [
+            // sending user who is requesting the edit page
             'user' => $request->user(),
         ]);
     }

@@ -1,20 +1,23 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Profile\AvatarController;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
+use OpenAI\Laravel\Facades\OpenAI;
 
 use function Laravel\Prompts\select;
 
 Route::get('/', function () {
     // Use to show the welcome.blade.php file content
-    // return view('welcome');
+    return view('welcome');
 
     // DB facades running sql quries
 
     // Select all user
-    $users = DB::select("select * from users");
+    // $users = DB::select("select * from users");
 
     // Select user by id
     // $users = FB::select("select * from users where id = 1");
@@ -25,12 +28,18 @@ Route::get('/', function () {
     // $users = DB::select("select * from users where email = ?", ['kimlong@gmail.com']);
 
     // Create new user 
-    // $users = DB::insert("insert into users (id, name, email, password) values (?,?,?,?)", [1, 'Kimlong1','kimlong11@gmail.com', "123456789"]);
+    // $users = DB::insert("insert into users (id, name, email, password) values (?,?,?,?)", [
+    //     1, 
+    //     'Kimlong1',
+    //     'kimlong1@gmail.com', 
+    //     "12345678"
+    // ]);
 
     // Update the user
     // $users = DB::update("update users set name = 'kimlong95' where email = ?", ['kimlong11@gmail.com']);
     // $users = DB::update("update users set email = ? where id = ?",
     // ['dara@gmail.com', 6]);
+    // $users = DB::update("update users set password = ? where id = ?", [bcrypt('12345678'), 1]);
 
     // Delete user 
     // $users = DB::delete("delete from users where id = ?", [6]);
@@ -49,8 +58,8 @@ Route::get('/', function () {
     // Insert new user using query builder
     // $users = DB::table('users')->insert([
     //     'id' => 2,
-    //     'name' => 'Kimlay',
-    //     'email' => 'kimlay@gmail.com',
+    //     'name' => 'Kimlong2',
+    //     'email' => 'kimlong2@gmail.com',
     //     'password' => "12345678"
     // ]);
 
@@ -68,9 +77,9 @@ Route::get('/', function () {
 
     // Create using eloquent 
     // $users = User::create([
-    //     'name' => 'KimLong10',
-    //     'email' => 'mizterlong121@gmail.com',
-    //     'password' => '12345678'
+    //     'name' => 'KimLong4',
+    //     'email' => 'mizterlong4@gmail.com',
+    //     'password' => bcrypt('12345678')
     // ]);
 
     // Update user using eloquent
@@ -79,6 +88,10 @@ Route::get('/', function () {
     //     'name' => 'long',
     //     'email' => 'long@gmail.com'
     // ]);
+    // $users = User::find(2);
+    // $users->update([
+    //     'password' => bcrypt('12345678')
+    // ]);
     
     // Delete using eloquent
     // $users = User::find(9);
@@ -86,7 +99,7 @@ Route::get('/', function () {
 
     // Die Dump for dd
     // Show the sql quries
-    dd($users);
+    // dd($users);
 });
 
 Route::get('/dashboard', function () {
@@ -96,7 +109,30 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/avatar', [AvatarController::class, 'update'])->name('profile.avatar');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/openai',function() {
+    $result = OpenAI::chat()->create([
+        'model' => 'gpt-3.5-turbo',
+        'messages' => [
+            ['role' => 'user', 'content' => 'Hello!'],
+        ],
+    ]);
+    
+    echo $result->choices[0]->message->content; // Hello! How can I assist you today?
+    
+});
+
+Route::get('/auth/redirect',function() {
+    return Socialite::driver('github')->redirect();
+});
+
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('github')->user();
+ 
+    // $user->token
+});
